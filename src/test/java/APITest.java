@@ -1,11 +1,11 @@
+import api.AuthApi;
 import api.BookingApi;
 import io.restassured.response.Response;
 import org.junit.Test;
+import payloads.AuthPayload;
+import payloads.AuthResponsePayload;
 import payloads.BookingDatesPayload;
 import payloads.BookingPayload;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
@@ -43,5 +43,20 @@ public class APITest {
         Response response = BookingApi.postBooking(bookingPayload);
 
         assertThat(response.getStatusCode(), equalTo(200));
+    }
+
+    @Test
+    public void deleteBookingReturns200(){
+        //TODO 1.create a book to delete
+
+        //Log in and get token
+        AuthPayload authPayload = new AuthPayload("admin", "password123");
+        Response authResponse = AuthApi.postAuth(authPayload);
+        String token = authResponse.as(AuthResponsePayload.class).getToken();
+
+        //Use token to delete booking
+        Response bookingResponse = BookingApi.deleteBooking("8", token);
+        assertThat(bookingResponse.getStatusCode(), equalTo(201));
+
     }
 }

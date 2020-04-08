@@ -5,9 +5,9 @@ import payloads.BookingPayload;
 
 import static io.restassured.RestAssured.given;
 
-public class BookingApi {
+public class BookingApi extends BaseApi{
 
-        private static final String apiUrl = "https://restful-booker.herokuapp.com/booking/";
+        private static final String apiUrl = baseUrl + "booking/";
 
     public static Response getBookingApi() {
         return given().get(apiUrl);
@@ -26,5 +26,11 @@ public class BookingApi {
                 .when()
                 .post(apiUrl);
 
+    }
+
+    public static Response deleteBooking(String bookingId, String token){
+        return given()
+                .header("Cookie", "token=" + token)
+                .delete(apiUrl + bookingId);
     }
 }
