@@ -47,7 +47,12 @@ public class APITest {
 
     @Test
     public void deleteBookingReturns200(){
-        //TODO 1.create a book to delete
+        //Creating a book to be delete
+        BookingDatesPayload bookingDatesPayload = new BookingDatesPayload(new Date(), new Date());
+        BookingPayload bookingPayload = new BookingPayload("Thais", "Freitas", 200, true, bookingDatesPayload,"They want to leave before bed");
+
+        Response bookingCreateResponse = BookingApi.CreateBooking(bookingPayload);
+        int bookToBeDeletedId =  bookingCreateResponse.jsonPath().getInt("bookingid");
 
         //Log in and get token
         AuthPayload authPayload = new AuthPayload("admin", "password123");
@@ -55,8 +60,8 @@ public class APITest {
         String token = authResponse.as(AuthResponsePayload.class).getToken();
 
         //Use token to delete booking
-        Response bookingResponse = BookingApi.deleteBooking("8", token);
-        assertThat(bookingResponse.getStatusCode(), equalTo(201));
+        Response bookingDeleteResponse = BookingApi.deleteBooking(bookToBeDeletedId, token);
+        assertThat(bookingDeleteResponse.getStatusCode(), equalTo(201));
 
     }
 }

@@ -28,9 +28,17 @@ public class BookingApi extends BaseApi{
 
     }
 
-    public static Response deleteBooking(String bookingId, String token){
+    public static Response deleteBooking(int bookingId, String token){
         return given()
                 .header("Cookie", "token=" + token)
                 .delete(apiUrl + bookingId);
+    }
+
+    public static Response CreateBooking(BookingPayload bookingPayload) {
+        return given()
+                .contentType(ContentType.JSON)
+                .body(bookingPayload)
+                .when()
+                .post(apiUrl);
     }
 }
